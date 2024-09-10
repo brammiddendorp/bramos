@@ -1,0 +1,32 @@
+title: Welcome to bramos
+properties:
+  mode: "run-once"
+actions:
+  post:
+  - run: git config --system url.git@github.com:.insteadOf https://github.com/
+screens:
+  first-screen:
+    source: yafti.screen.title
+    values:
+      title: "Welcome to bramos"
+      icon: "/usr/share/fedora-logos/fedora_darkbackground.svg"
+      description: |
+        My personal Fedora Atomic configuration
+
+  password-prompt:
+    source: yafti.screen.consent
+    values:
+      title: "Passphrase required"
+      description: |
+        Please enter your passphrase to decrypt the dotfiles repo.
+      actions:
+      - run: passphrase=$(zenity --password) && \
+             expect -c "spawn chezmoi apply; expect \"Enter passphrase:\"; send \"${passphrase}\r\"; expect eof"
+
+  final-screen:
+    source: yafti.screen.title
+    values:
+      title: "All done!"
+      icon: "/usr/share/fedora-logos/fedora_darkbackground.svg"
+      description: |
+        Done setting up!
